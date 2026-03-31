@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - MontClair</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .app-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .view {
+            display: none;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #ff9800;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .btn {
+            padding: 12px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        .btn-primary {
+            background-color: #ff9800;
+        }
+
+        .btn-secondary {
+            background-color: #607d8b;
+        }
+
+        .btn-success {
+            background-color: #4CAF50;
+        }
+
+        .btn-edit {
+            background-color: #2196F3;
+            padding: 6px 12px;
+            font-size: 12px;
+            width: auto;
+            margin: 0;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 14px;
+            color: #444;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 15px;
+        }
+
+        .select-destaque {
+            border: 2px solid #ff9800;
+            background-color: #fffaf0;
+            font-weight: bold;
+        }
+
+        .grid-dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card-resumo {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            border-bottom: 4px solid #ccc;
+        }
+
+        .card-resumo.destaque {
+            grid-column: span 2;
+            background: #e8f5e9;
+            border-bottom-color: #4CAF50;
+        }
+
+        .card-resumo h4 {
+            margin: 0 0 8px 0;
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        .card-resumo p {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .valor-dinheiro {
+            color: #2e7d32 !important;
+            font-size: 28px !important;
+        }
+
+        .lista-vendas {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .card-venda {
+            background: #fafafa;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .bg-pago {
+            background-color: #4CAF50;
+        }
+
+        .bg-pendente {
+            background-color: #ff9800;
+        }
+
+        .erro-msg {
+            color: red;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-container">
+
+        <div id="view-login" class="view active">
+            <div style="text-align: center; margin-top: 40px;">
+                <h2>Acesso Restrito</h2>
+                <p style="color: #666; margin-bottom: 20px;">Digite sua senha para acessar o painel de vendas.</p>
+                <div class="form-group">
+                    <input type="password" id="inputSenha" placeholder="Senha do sistema"
+                        style="text-align: center; font-size: 18px;">
+                </div>
+                <button class="btn btn-primary" onclick="entrarSistema()" id="btnEntrar">Entrar no Sistema</button>
+                <div id="msgLogin" class="erro-msg" style="margin-top: 15px;"></div>
+            </div>
+        </div>
+
+        <div id="view-home" class="view">
+            <h2>Painel Geral</h2>
+            <button class="btn btn-primary" onclick="mudarTela('view-novo-pedido')">+ Criar Novo Pedido</button>
+            <div class="form-group" style="margin-top: 25px;">
+                <label>Selecione um Pedido para ver o Resumo:</label>
+                <select id="selectPedido" class="select-destaque" onchange="atualizarDashboard()">
+                    <option value="">Carregando...</option>
+                </select>
+            </div>
+            <div id="area-dashboard" style="display: none;">
+                <div class="grid-dashboard">
+                    <div class="card-resumo destaque">
+                        <h4>Total Recebido (Pagos)</h4>
+                        <p id="dashRecebido" class="valor-dinheiro">R$ 0,00</p>
+                    </div>
+                    <div class="card-resumo">
+                        <h4>Qtd Lote (Total)</h4>
+                        <p id="dashTotal">0</p>
+                    </div>
+                    <div class="card-resumo">
+                        <h4>Data</h4>
+                        <p id="dashData" style="font-size: 16px; padding-top:5px;">--</p>
+                    </div>
+                    <div class="card-resumo" style="border-bottom-color: #2196F3;">
+                        <h4>Pães Vendidos</h4>
+                        <p id="dashVendidos" style="color: #1976d2;">0</p>
+                    </div>
+                    <div class="card-resumo" style="border-bottom-color: #f44336;">
+                        <h4>Quantos Faltam</h4>
+                        <p id="dashFaltam" style="color: #d32f2f;">0</p>
+                    </div>
+                </div>
+                <button class="btn btn-success" onclick="abrirGerenciador()">Gerenciar Lançamentos</button>
+            </div>
+        </div>
+
+        <div id="view-novo-pedido" class="view">
+            <h2>Novo Lote / Pedido</h2>
+            <form id="formNovoPedido">
+                <div class="form-group"><label>Descrição</label><input type="text" id="descPedido" required></div>
+                <div class="form-group"><label>Quantidade Total</label><input type="number" id="qtdTotalPedido" required
+                        min="1"></div>
+                <button type="submit" class="btn btn-success" id="btnSalvarPedido">Salvar</button>
+                <button type="button" class="btn btn-secondary" onclick="voltarParaHome()">Cancelar</button>
+            </form>
+        </div>
+
+        <div id="view-gerenciar" class="view">
+            <h2>Lançamentos</h2>
+            <button class="btn btn-secondary" onclick="voltarParaHome()">← Voltar ao Painel</button>
+            <div
+                style="background: #e3f2fd; padding: 10px; border-radius: 8px; text-align: center; margin-bottom: 15px;">
+                <strong id="gerenciar-nome-pedido">Pedido</strong><br>
+                <small>Vendidos: <span id="gerenciar-vendidos">0</span> / <span id="gerenciar-total">0</span></small>
+            </div>
+            <button class="btn btn-success" id="btnNovaVenda" onclick="abrirFormularioVenda()">+ Nova Venda</button>
+            <div id="lista-vendas-container" class="lista-vendas"></div>
+        </div>
+
+        <div id="view-form-venda" class="view">
+            <h2 id="titulo-form-venda">Adicionar Venda</h2>
+            <button class="btn btn-secondary" onclick="mudarTela('view-gerenciar')">← Cancelar</button>
+            <form id="formLancamento">
+                <input type="hidden" id="lanModo">
+                <input type="hidden" id="lanIdEditar">
+                <div class="form-group"><label>Cliente</label><input type="text" id="lanCliente" required></div>
+                <div class="form-group"><label>Quantidade Desta Venda</label><input type="number" id="lanQtd" required
+                        min="1"></div>
+                <div style="display: flex; gap: 10px;">
+                    <div class="form-group" style="flex: 1;"><label>Valor (R$)</label><input type="number" id="lanValor"
+                            step="0.01" required></div>
+                    <div class="form-group" style="flex: 1;"><label>Tamanho</label>
+                        <select id="lanTamanho" required>
+                            <option value="Normal">Normal</option>
+                            <option value="Mini">Mini</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <div class="form-group" style="flex: 1;"><label>Pagamento</label>
+                        <select id="lanPagamento" required>
+                            <option value="Pix">Pix</option>
+                            <option value="Dinheiro">Dinheiro</option>
+                            <option value="Cartão">Cartão</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="flex: 1;"><label>Status</label>
+                        <select id="lanStatus" required>
+                            <option value="Pago">Pago</option>
+                            <option value="Pendente">Pendente</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success" id="btnSalvarLancamento">Salvar Venda</button>
+            </form>
+            <div id="msgLancamento" class="erro-msg" style="margin-top: 10px;"></div>
+        </div>
+
+    </div>
+
+    <script>
+        const urlAPI = 'https://script.google.com/macros/s/AKfycbxJa1bjGaLq9ainDjvlpO-wdYU1ZjXww219l-2umhAQMBwzziokIGGQlFhsVQd2Dj8_BA/exec';
+
+        let todosPedidos = [];
+        let pedidoAtual = null;
+        let lancamentosAtuais = [];
+        let totalVendidoAtual = 0;
+
+        // Função central de comunicação sem o campo de senha
+        async function fetchAPI(dados) {
+            const config = {
+                method: 'POST',
+                body: JSON.stringify(dados),
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                // ESSA LINHA ABAIXO É CRUCIAL PARA ENVIAR O LOGIN DO GOOGLE
+                mode: 'cors',
+                credentials: 'omit'
+            };
+
+            try {
+                const response = await fetch(urlAPI, config);
+                const json = await response.json();
+
+                // Se o backend retornar o erro de e-mail bloqueado que configuramos
+                if (json.status === "erro") {
+                    alert(json.mensagem);
+                    return [];
+                }
+
+                return json;
+            } catch (e) {
+                console.error("Erro na requisição:", e);
+                throw e;
+            }
+        }
+
+        // Inicia o sistema direto na Home
+        window.onload = () => {
+            mudarTela('view-home');
+            carregarPedidos();
+        };
+
+        function mudarTela(idTela) {
+            document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+            document.getElementById(idTela).classList.add('active');
+        }
+
+        async function carregarPedidos() {
+            const select = document.getElementById('selectPedido');
+            try {
+                todosPedidos = await fetchAPI({ acao: 'listarPedidos' });
+                if (todosPedidos.length === 0) {
+                    select.innerHTML = '<option value="">Nenhum pedido</option>';
+                    return;
+                }
+
+                select.innerHTML = '<option value="">-- Escolha --</option>';
+                [...todosPedidos].reverse().forEach(p => {
+                    select.innerHTML += `<option value="${p.ID_Pedido}">#${p.ID_Pedido} - ${p.Descricao}</option>`;
+                });
+                select.selectedIndex = 1;
+                atualizarDashboard();
+            } catch (e) {
+                select.innerHTML = '<option value="">Erro ao carregar</option>';
+            }
+        }
+        async function atualizarDashboard() {
+            const id = document.getElementById('selectPedido').value;
+            if (!id) return document.getElementById('area-dashboard').style.display = 'none';
+
+            document.getElementById('area-dashboard').style.display = 'block';
+            pedidoAtual = todosPedidos.find(p => p.ID_Pedido == id);
+
+            document.getElementById('dashData').innerText = pedidoAtual.Data || '--';
+            document.getElementById('dashTotal').innerText = pedidoAtual.Qtd_Total;
+            document.getElementById('dashRecebido').innerText = 'Calculando...';
+
+            lancamentosAtuais = await fetchAPI({ acao: 'carregarDetalhes', idPedido: id });
+
+            let vendidos = 0;
+            let recebido = 0;
+
+            lancamentosAtuais.forEach(l => {
+                vendidos += Number(l.Qtd_Vendida || 0);
+                let isPago = (l.Status === 'Pago' || !l.Status || l.Status.trim() === '');
+                if (isPago) {
+                    let val = String(l.Valor).replace(',', '.');
+                    recebido += Number(val || 0);
+                }
+            });
+
+            totalVendidoAtual = vendidos;
+            document.getElementById('dashVendidos').innerText = vendidos;
+            document.getElementById('dashFaltam').innerText = pedidoAtual.Qtd_Total - vendidos;
+            document.getElementById('dashRecebido').innerText = recebido.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        function abrirGerenciador() {
+            mudarTela('view-gerenciar');
+            document.getElementById('gerenciar-nome-pedido').innerText = `#${pedidoAtual.ID_Pedido} - ${pedidoAtual.Descricao}`;
+            document.getElementById('gerenciar-vendidos').innerText = totalVendidoAtual;
+            document.getElementById('gerenciar-total').innerText = pedidoAtual.Qtd_Total;
+
+            const container = document.getElementById('lista-vendas-container');
+            container.innerHTML = '';
+
+            if (lancamentosAtuais.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:#666;">Nenhuma venda lançada ainda.</p>';
+            } else {
+                lancamentosAtuais.forEach(l => {
+                    let statusClass = (l.Status === 'Pendente') ? 'bg-pendente' : 'bg-pago';
+                    let statusText = l.Status || 'Pago';
+                    let valorBRL = Number(String(l.Valor).replace(',', '.')).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+                    container.innerHTML += `
+                    <div class="card-venda">
+                        <div>
+                            <strong>${l.Cliente}</strong> <span class="badge ${statusClass}">${statusText}</span><br>
+                            <small>${l.Qtd_Vendida} unid. | ${l.Tamanho} | ${valorBRL}</small>
+                        </div>
+                        <button class="btn btn-edit" onclick="abrirFormularioEdicao(${l.ID_Lancamento})">Editar</button>
+                    </div>
+                    `;
+                });
+            }
+        }
+
+        function abrirFormularioVenda() {
+            mudarTela('view-form-venda');
+            document.getElementById('titulo-form-venda').innerText = "Adicionar Venda";
+            document.getElementById('formLancamento').reset();
+            document.getElementById('lanModo').value = 'novo';
+            document.getElementById('msgLancamento').innerText = '';
+        }
+
+        function abrirFormularioEdicao(idLan) {
+            mudarTela('view-form-venda');
+            document.getElementById('titulo-form-venda').innerText = "Editar Venda";
+            document.getElementById('msgLancamento').innerText = '';
+            document.getElementById('lanModo').value = 'editar';
+            document.getElementById('lanIdEditar').value = idLan;
+
+            const lancamento = lancamentosAtuais.find(l => l.ID_Lancamento == idLan);
+            document.getElementById('lanCliente').value = lancamento.Cliente;
+            document.getElementById('lanQtd').value = lancamento.Qtd_Vendida;
+            document.getElementById('lanValor').value = String(lancamento.Valor).replace(',', '.');
+            document.getElementById('lanTamanho').value = lancamento.Tamanho;
+            document.getElementById('lanPagamento').value = lancamento.Pagamento;
+            document.getElementById('lanStatus').value = lancamento.Status || 'Pago';
+        }
+
+        document.getElementById('formLancamento').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const msg = document.getElementById('msgLancamento');
+            const modo = document.getElementById('lanModo').value;
+            const qtdDesejada = Number(document.getElementById('lanQtd').value);
+
+            let totalSimulado = totalVendidoAtual;
+            if (modo === 'editar') {
+                const lanAntigo = lancamentosAtuais.find(l => l.ID_Lancamento == document.getElementById('lanIdEditar').value);
+                totalSimulado -= Number(lanAntigo.Qtd_Vendida);
+            }
+
+            if ((totalSimulado + qtdDesejada) > pedidoAtual.Qtd_Total) {
+                msg.innerText = `Estoque insuficiente! Você pode lançar mais ${pedidoAtual.Qtd_Total - totalSimulado} unid.`;
+                return;
+            }
+
+            const btn = document.getElementById('btnSalvarLancamento');
+            btn.innerText = 'Salvando...'; btn.disabled = true; msg.innerText = '';
+
+            const payload = {
+                acao: (modo === 'novo') ? 'adicionarLancamento' : 'editarLancamento',
+                idPedido: pedidoAtual.ID_Pedido,
+                idLancamento: document.getElementById('lanIdEditar').value,
+                cliente: document.getElementById('lanCliente').value,
+                quantidade: qtdDesejada,
+                valor: document.getElementById('lanValor').value,
+                tamanho: document.getElementById('lanTamanho').value,
+                pagamento: document.getElementById('lanPagamento').value,
+                status: document.getElementById('lanStatus').value
+            };
+
+            await fetchAPI(payload);
+            btn.innerText = 'Salvar Venda'; btn.disabled = false;
+            await atualizarDashboard();
+            abrirGerenciador();
+        });
+
+        document.getElementById('formNovoPedido').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btnSalvarPedido');
+            btn.innerText = 'Salvando...'; btn.disabled = true;
+
+            await fetchAPI({
+                acao: 'criarPedido',
+                descricao: document.getElementById('descPedido').value,
+                qtdTotal: document.getElementById('qtdTotalPedido').value
+            });
+
+            document.getElementById('formNovoPedido').reset();
+            btn.innerText = 'Salvar'; btn.disabled = false;
+            voltarParaHome();
+        });
+
+        function voltarParaHome() {
+            mudarTela('view-home');
+            carregarPedidos();
+        }
+
+    </script>
+</body>
+
+</html>
