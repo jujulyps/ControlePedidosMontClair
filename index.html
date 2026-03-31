@@ -309,29 +309,24 @@
 
         // Função central de comunicação sem o campo de senha
         async function fetchAPI(dados) {
-            const config = {
-                method: 'POST',
-                body: JSON.stringify(dados),
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                // ESSA LINHA ABAIXO É CRUCIAL PARA ENVIAR O LOGIN DO GOOGLE
-                mode: 'cors',
-                credentials: 'omit'
-            };
-
             try {
-                const response = await fetch(urlAPI, config);
+                const response = await fetch(urlAPI, {
+                    method: 'POST',
+                    body: JSON.stringify(dados),
+                    headers: {
+                        // Importante: use text/plain para evitar o pré-vôo (preflight) do CORS
+                        'Content-Type': 'text/plain;charset=utf-8'
+                    }
+                });
+
+                if (!response.ok) throw new Error('Erro na rede');
+
                 const json = await response.json();
-
-                // Se o backend retornar o erro de e-mail bloqueado que configuramos
-                if (json.status === "erro") {
-                    alert(json.mensagem);
-                    return [];
-                }
-
                 return json;
             } catch (e) {
                 console.error("Erro na requisição:", e);
-                throw e;
+                // Exibe o erro no console para te ajudar a debugar
+                return [];
             }
         }
 
