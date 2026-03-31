@@ -1,19 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - MontClair</title>
-    
+    <title>MontClair</title>
     <link rel="icon" type="image/png" href="icone.png">
-
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; }
         .app-container { max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
         .view { display: none; }
         .view.active { display: block; }
-        h2 { color: #333; border-bottom: 2px solid #ff9800; padding-bottom: 10px; margin-top: 0; }
+        h2 { color: #333; border-bottom: 2px solid #ff9800; padding-bottom: 10px; margin-top: 0; display: flex; justify-content: space-between; align-items: center;}
         .btn { padding: 12px 15px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: white; width: 100%; box-sizing: border-box; margin-bottom: 10px; font-size: 15px; }
         .btn-primary { background-color: #ff9800; }
         .btn-secondary { background-color: #607d8b; }
@@ -29,8 +26,8 @@
         .card-resumo h4 { margin: 0 0 8px 0; font-size: 12px; color: #666; text-transform: uppercase; }
         .card-resumo p { margin: 0; font-size: 24px; font-weight: bold; color: #333; }
         .valor-dinheiro { color: #2e7d32 !important; font-size: 28px !important; }
-        .lista-vendas { margin-top: 15px; display: flex; flex-direction: column; gap: 10px; }
-        .card-venda { background: #fafafa; border: 1px solid #ddd; padding: 10px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; }
+        .lista-itens { margin-top: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .card-item { background: #fafafa; border: 1px solid #ddd; padding: 10px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; }
         .badge { padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; color: white; }
         .bg-pago { background-color: #4CAF50; }
         .bg-pendente { background-color: #ff9800; }
@@ -43,7 +40,7 @@
     <div class="app-container">
 
         <div id="view-home" class="view active">
-            <h2>Painel Geral</h2>
+            <h2>Painel Geral <button class="btn-edit" style="background:#607d8b;" onclick="abrirGerenciadorProdutos()">⚙️ Produtos</button></h2>
             <button class="btn btn-primary" onclick="mudarTela('view-novo-pedido')">+ Criar Novo Pedido</button>
             <div class="form-group" style="margin-top: 25px;">
                 <label>Selecione um Pedido para ver o Resumo:</label>
@@ -66,7 +63,7 @@
                         <p id="dashData" style="font-size: 16px; padding-top:5px;">--</p>
                     </div>
                     <div class="card-resumo" style="border-bottom-color: #2196F3;">
-                        <h4>Produtos Vendidos</h4>
+                        <h4>Itens Vendidos</h4>
                         <p id="dashVendidos" style="color: #1976d2;">0</p>
                     </div>
                     <div class="card-resumo" style="border-bottom-color: #f44336;">
@@ -76,6 +73,24 @@
                 </div>
                 <button class="btn btn-success" onclick="abrirGerenciador()">Gerenciar Lançamentos</button>
             </div>
+        </div>
+
+        <div id="view-produtos" class="view">
+            <h2>Gerenciar Produtos</h2>
+            <button class="btn btn-secondary" onclick="voltarParaHome()">← Voltar ao Painel</button>
+            <button class="btn btn-success" onclick="abrirFormularioProduto()">+ Novo Produto</button>
+            <div id="lista-produtos-container" class="lista-itens"></div>
+        </div>
+
+        <div id="view-form-produto" class="view">
+            <h2 id="titulo-form-produto">Novo Produto</h2>
+            <button class="btn btn-secondary" onclick="mudarTela('view-produtos')">← Cancelar</button>
+            <form id="formProduto">
+                <input type="hidden" id="prodIdEditar">
+                <div class="form-group"><label>Nome do Produto (Ex: 4 docinhos)</label><input type="text" id="prodNome" required></div>
+                <div class="form-group"><label>Preço Unitário (R$)</label><input type="number" id="prodPreco" step="0.01" required></div>
+                <button type="submit" class="btn btn-success" id="btnSalvarProduto">Salvar Produto</button>
+            </form>
         </div>
 
         <div id="view-novo-pedido" class="view">
@@ -96,7 +111,7 @@
                 <small>Vendidos: <span id="gerenciar-vendidos">0</span> / <span id="gerenciar-total">0</span></small>
             </div>
             <button class="btn btn-success" id="btnNovaVenda" onclick="abrirFormularioVenda()">+ Nova Venda</button>
-            <div id="lista-vendas-container" class="lista-vendas"></div>
+            <div id="lista-vendas-container" class="lista-itens"></div>
         </div>
 
         <div id="view-form-venda" class="view">
@@ -110,13 +125,10 @@
                 <div style="display: flex; gap: 10px;">
                     <div class="form-group" style="flex: 1;"><label>Produto</label>
                         <select id="lanProduto" required>
-                            <option value="">Selecione...</option>
-                            <option value="4 docinhos">4 docinhos</option>
-                            <option value="Brownie">Brownie</option>
-                        </select>
+                            </select>
                     </div>
                     <div class="form-group" style="flex: 1;"><label>Qtd. desta Venda</label>
-                        <input type="number" id="lanQtd" required min="1">
+                        <input type="number" id="lanQtd" value="1" required min="1">
                     </div>
                 </div>
 
@@ -140,44 +152,130 @@
     </div>
 
     <script>
-        // COLOQUE AQUI A SUA URL DA API (Mantenha a que está funcionando)
-        const urlAPI = 'https://script.google.com/macros/s/AKfycbxtWGIA1OMk4EzFKub7z5Lsx71vxL1py8-xLfiGfQerh99NRVUGHao4AYlQUo0qEK11zQ/exec';
+        // COLOQUE AQUI A SUA NOVA URL DO APPS SCRIPT
+        const urlAPI = 'https://script.google.com/macros/s/AKfycbxiIly_3K910voX-9smKrSqWCOqFOvEP7gVed721pe8X6OptGYhExOCiUgwgbqo1h0lHw/exec';
 
         let todosPedidos = [];
         let pedidoAtual = null;
         let lancamentosAtuais = [];
+        let todosProdutos = [];
         let totalVendidoAtual = 0;
 
-        // Gatilho para preencher o valor automaticamente
-        document.getElementById('lanProduto').addEventListener('change', function(e) {
-            const campoValor = document.getElementById('lanValor');
-            if (e.target.value === '4 docinhos') {
-                campoValor.value = '12.00';
-            } else {
-                campoValor.value = ''; // Limpa se for Brownie ou outro
-            }
-        });
+        // INICIALIZAÇÃO: Agora carrega Produtos e depois Pedidos
+        window.onload = async () => {
+            await carregarProdutosBase();
+            carregarPedidos();
+        };
 
         async function fetchAPI(dados) {
             try {
-                const response = await fetch(urlAPI, {
-                    method: 'POST',
-                    mode: 'cors',
-                    redirect: 'follow',
-                    body: JSON.stringify(dados)
-                });
+                const response = await fetch(urlAPI, { method: 'POST', mode: 'cors', redirect: 'follow', body: JSON.stringify(dados) });
                 const json = await response.json();
                 if (json.status === "erro") { alert(json.mensagem); return []; }
                 return json;
-            } catch (e) { console.error("Erro na API:", e); return []; }
+            } catch (e) { console.error("Erro:", e); return []; }
         }
-
-        window.onload = () => { carregarPedidos(); };
 
         function mudarTela(idTela) {
             document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
             document.getElementById(idTela).classList.add('active');
         }
+
+        function voltarParaHome() {
+            mudarTela('view-home');
+            carregarPedidos();
+        }
+
+        // ==========================================
+        // MÓDULO DE PRODUTOS E MATEMÁTICA DE PREÇOS
+        // ==========================================
+
+        async function carregarProdutosBase() {
+            todosProdutos = await fetchAPI({ acao: 'listarProdutos' });
+            
+            // Atualiza o Dropdown do formulário de Vendas
+            const selectProd = document.getElementById('lanProduto');
+            selectProd.innerHTML = '<option value="">Selecione o produto...</option>';
+            todosProdutos.forEach(p => {
+                selectProd.innerHTML += `<option value="${p.Nome}" data-preco="${p.Preco}">${p.Nome}</option>`;
+            });
+        }
+
+        // LÓGICA DE MULTIPLICAÇÃO AUTOMÁTICA
+        function calcularPrecoAutomatico() {
+            const select = document.getElementById('lanProduto');
+            const qtd = Number(document.getElementById('lanQtd').value) || 0;
+            const campoValor = document.getElementById('lanValor');
+
+            if (select.selectedIndex > 0 && qtd > 0) {
+                const optionSelecionada = select.options[select.selectedIndex];
+                const precoBase = Number(String(optionSelecionada.getAttribute('data-preco')).replace(',', '.')) || 0;
+                
+                if (precoBase > 0) {
+                    campoValor.value = (precoBase * qtd).toFixed(2);
+                }
+            }
+        }
+
+        // Adiciona "escutadores" para calcular sempre que mexer no Produto ou na Quantidade
+        document.getElementById('lanProduto').addEventListener('change', calcularPrecoAutomatico);
+        document.getElementById('lanQtd').addEventListener('input', calcularPrecoAutomatico);
+
+
+        function abrirGerenciadorProdutos() {
+            mudarTela('view-produtos');
+            const container = document.getElementById('lista-produtos-container');
+            container.innerHTML = '';
+
+            if (todosProdutos.length === 0) {
+                container.innerHTML = '<p style="text-align:center;">Nenhum produto cadastrado.</p>';
+            } else {
+                todosProdutos.forEach(p => {
+                    let valor = Number(String(p.Preco).replace(',','.')).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                    container.innerHTML += `
+                    <div class="card-item">
+                        <div><strong>${p.Nome}</strong><br><small>${valor}</small></div>
+                        <button class="btn btn-edit" onclick="abrirFormularioProduto('${p.ID_Produto}')">Editar</button>
+                    </div>`;
+                });
+            }
+        }
+
+        function abrirFormularioProduto(id = null) {
+            mudarTela('view-form-produto');
+            document.getElementById('formProduto').reset();
+            document.getElementById('prodIdEditar').value = id || '';
+            
+            if (id) {
+                document.getElementById('titulo-form-produto').innerText = "Editar Produto";
+                const prod = todosProdutos.find(p => p.ID_Produto == id);
+                document.getElementById('prodNome').value = prod.Nome;
+                document.getElementById('prodPreco').value = String(prod.Preco).replace(',', '.');
+            } else {
+                document.getElementById('titulo-form-produto').innerText = "Novo Produto";
+            }
+        }
+
+        document.getElementById('formProduto').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btnSalvarProduto');
+            btn.innerText = 'Salvando...'; btn.disabled = true;
+
+            await fetchAPI({
+                acao: 'salvarProduto',
+                idProduto: document.getElementById('prodIdEditar').value,
+                nome: document.getElementById('prodNome').value,
+                preco: document.getElementById('prodPreco').value
+            });
+
+            btn.innerText = 'Salvar Produto'; btn.disabled = false;
+            await carregarProdutosBase(); // Recarrega os produtos atualizados
+            abrirGerenciadorProdutos(); // Volta pra tela de lista de produtos
+        });
+
+        // ==========================================
+        // MÓDULO DE PEDIDOS E LANÇAMENTOS (MANTIDO)
+        // ==========================================
 
         async function carregarPedidos() {
             const select = document.getElementById('selectPedido');
@@ -211,16 +309,12 @@
 
             lancamentosAtuais = await fetchAPI({ acao: 'carregarDetalhes', idPedido: id });
 
-            let vendidos = 0;
-            let recebido = 0;
+            let vendidos = 0; let recebido = 0;
 
             lancamentosAtuais.forEach(l => {
                 vendidos += Number(l.Qtd_Vendida || 0);
                 let isPago = (l.Status === 'Pago' || !l.Status || l.Status.trim() === '');
-                if (isPago) {
-                    let val = String(l.Valor).replace(',', '.');
-                    recebido += Number(val || 0);
-                }
+                if (isPago) recebido += Number(String(l.Valor).replace(',', '.') || 0);
             });
 
             totalVendidoAtual = vendidos;
@@ -243,18 +337,15 @@
             } else {
                 lancamentosAtuais.forEach(l => {
                     let statusClass = (l.Status === 'Pendente') ? 'bg-pendente' : 'bg-pago';
-                    let statusText = l.Status || 'Pago';
                     let valorBRL = Number(String(l.Valor).replace(',', '.')).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-
                     container.innerHTML += `
-                    <div class="card-venda">
+                    <div class="card-item">
                         <div>
-                            <strong>${l.Cliente}</strong> <span class="badge ${statusClass}">${statusText}</span><br>
+                            <strong>${l.Cliente}</strong> <span class="badge ${statusClass}">${l.Status || 'Pago'}</span><br>
                             <small>${l.Qtd_Vendida} unid. | <b>${l.Produto}</b> | ${valorBRL}</small>
                         </div>
                         <button class="btn btn-edit" onclick="abrirFormularioEdicao(${l.ID_Lancamento})">Editar</button>
-                    </div>
-                    `;
+                    </div>`;
                 });
             }
         }
@@ -295,25 +386,24 @@
             }
 
             if ((totalSimulado + qtdDesejada) > pedidoAtual.Qtd_Total) {
-                msg.innerText = `Estoque insuficiente! Você pode lançar mais ${pedidoAtual.Qtd_Total - totalSimulado} unid.`;
+                msg.innerText = `Estoque insuficiente! Restam ${pedidoAtual.Qtd_Total - totalSimulado} unid.`;
                 return;
             }
 
             const btn = document.getElementById('btnSalvarLancamento');
             btn.innerText = 'Salvando...'; btn.disabled = true; msg.innerText = '';
 
-            const payload = {
+            await fetchAPI({
                 acao: (modo === 'novo') ? 'adicionarLancamento' : 'editarLancamento',
                 idPedido: pedidoAtual.ID_Pedido,
                 idLancamento: document.getElementById('lanIdEditar').value,
                 cliente: document.getElementById('lanCliente').value,
                 quantidade: qtdDesejada,
                 valor: document.getElementById('lanValor').value,
-                produto: document.getElementById('lanProduto').value, // Alterado aqui
+                produto: document.getElementById('lanProduto').value,
                 status: document.getElementById('lanStatus').value
-            };
+            });
 
-            await fetchAPI(payload);
             btn.innerText = 'Salvar Venda'; btn.disabled = false;
             await atualizarDashboard();
             abrirGerenciador();
@@ -334,11 +424,6 @@
             btn.innerText = 'Salvar'; btn.disabled = false;
             voltarParaHome();
         });
-
-        function voltarParaHome() {
-            mudarTela('view-home');
-            carregarPedidos();
-        }
 
     </script>
 </body>
