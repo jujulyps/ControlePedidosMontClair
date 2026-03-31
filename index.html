@@ -5,180 +5,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - MontClair</title>
+    
+    <link rel="icon" type="image/png" href="icone.png">
+
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .app-container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .view {
-            display: none;
-        }
-
-        .view.active {
-            display: block;
-        }
-
-        h2 {
-            color: #333;
-            border-bottom: 2px solid #ff9800;
-            padding-bottom: 10px;
-            margin-top: 0;
-        }
-
-        .btn {
-            padding: 12px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            color: white;
-            width: 100%;
-            box-sizing: border-box;
-            margin-bottom: 10px;
-            font-size: 15px;
-        }
-
-        .btn-primary {
-            background-color: #ff9800;
-        }
-
-        .btn-secondary {
-            background-color: #607d8b;
-        }
-
-        .btn-success {
-            background-color: #4CAF50;
-        }
-
-        .btn-edit {
-            background-color: #2196F3;
-            padding: 6px 12px;
-            font-size: 12px;
-            width: auto;
-            margin: 0;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            font-size: 14px;
-            color: #444;
-        }
-
-        input,
-        select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-            font-size: 15px;
-        }
-
-        .select-destaque {
-            border: 2px solid #ff9800;
-            background-color: #fffaf0;
-            font-weight: bold;
-        }
-
-        .grid-dashboard {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-
-        .card-resumo {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
-            text-align: center;
-            border-bottom: 4px solid #ccc;
-        }
-
-        .card-resumo.destaque {
-            grid-column: span 2;
-            background: #e8f5e9;
-            border-bottom-color: #4CAF50;
-        }
-
-        .card-resumo h4 {
-            margin: 0 0 8px 0;
-            font-size: 12px;
-            color: #666;
-            text-transform: uppercase;
-        }
-
-        .card-resumo p {
-            margin: 0;
-            font-size: 24px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .valor-dinheiro {
-            color: #2e7d32 !important;
-            font-size: 28px !important;
-        }
-
-        .lista-vendas {
-            margin-top: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .card-venda {
-            background: #fafafa;
-            border: 1px solid #ddd;
-            padding: 10px;
-            border-radius: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .badge {
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: bold;
-            color: white;
-        }
-
-        .bg-pago {
-            background-color: #4CAF50;
-        }
-
-        .bg-pendente {
-            background-color: #ff9800;
-        }
-
-        .erro-msg {
-            color: red;
-            font-size: 14px;
-            text-align: center;
-            margin-bottom: 10px;
-        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; }
+        .app-container { max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
+        .view { display: none; }
+        .view.active { display: block; }
+        h2 { color: #333; border-bottom: 2px solid #ff9800; padding-bottom: 10px; margin-top: 0; }
+        .btn { padding: 12px 15px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: white; width: 100%; box-sizing: border-box; margin-bottom: 10px; font-size: 15px; }
+        .btn-primary { background-color: #ff9800; }
+        .btn-secondary { background-color: #607d8b; }
+        .btn-success { background-color: #4CAF50; }
+        .btn-edit { background-color: #2196F3; padding: 6px 12px; font-size: 12px; width: auto; margin: 0; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; color: #444; }
+        input, select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 15px; }
+        .select-destaque { border: 2px solid #ff9800; background-color: #fffaf0; font-weight: bold; }
+        .grid-dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; margin-bottom: 20px; }
+        .card-resumo { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08); text-align: center; border-bottom: 4px solid #ccc; }
+        .card-resumo.destaque { grid-column: span 2; background: #e8f5e9; border-bottom-color: #4CAF50; }
+        .card-resumo h4 { margin: 0 0 8px 0; font-size: 12px; color: #666; text-transform: uppercase; }
+        .card-resumo p { margin: 0; font-size: 24px; font-weight: bold; color: #333; }
+        .valor-dinheiro { color: #2e7d32 !important; font-size: 28px !important; }
+        .lista-vendas { margin-top: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .card-venda { background: #fafafa; border: 1px solid #ddd; padding: 10px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; }
+        .badge { padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; color: white; }
+        .bg-pago { background-color: #4CAF50; }
+        .bg-pendente { background-color: #ff9800; }
+        .erro-msg { color: red; font-size: 14px; text-align: center; margin-bottom: 10px; }
     </style>
 </head>
 
@@ -186,20 +42,7 @@
 
     <div class="app-container">
 
-        <div id="view-login" class="view active">
-            <div style="text-align: center; margin-top: 40px;">
-                <h2>Acesso Restrito</h2>
-                <p style="color: #666; margin-bottom: 20px;">Digite sua senha para acessar o painel de vendas.</p>
-                <div class="form-group">
-                    <input type="password" id="inputSenha" placeholder="Senha do sistema"
-                        style="text-align: center; font-size: 18px;">
-                </div>
-                <button class="btn btn-primary" onclick="entrarSistema()" id="btnEntrar">Entrar no Sistema</button>
-                <div id="msgLogin" class="erro-msg" style="margin-top: 15px;"></div>
-            </div>
-        </div>
-
-        <div id="view-home" class="view">
+        <div id="view-home" class="view active">
             <h2>Painel Geral</h2>
             <button class="btn btn-primary" onclick="mudarTela('view-novo-pedido')">+ Criar Novo Pedido</button>
             <div class="form-group" style="margin-top: 25px;">
@@ -223,7 +66,7 @@
                         <p id="dashData" style="font-size: 16px; padding-top:5px;">--</p>
                     </div>
                     <div class="card-resumo" style="border-bottom-color: #2196F3;">
-                        <h4>Pães Vendidos</h4>
+                        <h4>Produtos Vendidos</h4>
                         <p id="dashVendidos" style="color: #1976d2;">0</p>
                     </div>
                     <div class="card-resumo" style="border-bottom-color: #f44336;">
@@ -239,8 +82,7 @@
             <h2>Novo Lote / Pedido</h2>
             <form id="formNovoPedido">
                 <div class="form-group"><label>Descrição</label><input type="text" id="descPedido" required></div>
-                <div class="form-group"><label>Quantidade Total</label><input type="number" id="qtdTotalPedido" required
-                        min="1"></div>
+                <div class="form-group"><label>Quantidade Total</label><input type="number" id="qtdTotalPedido" required min="1"></div>
                 <button type="submit" class="btn btn-success" id="btnSalvarPedido">Salvar</button>
                 <button type="button" class="btn btn-secondary" onclick="voltarParaHome()">Cancelar</button>
             </form>
@@ -249,8 +91,7 @@
         <div id="view-gerenciar" class="view">
             <h2>Lançamentos</h2>
             <button class="btn btn-secondary" onclick="voltarParaHome()">← Voltar ao Painel</button>
-            <div
-                style="background: #e3f2fd; padding: 10px; border-radius: 8px; text-align: center; margin-bottom: 15px;">
+            <div style="background: #e3f2fd; padding: 10px; border-radius: 8px; text-align: center; margin-bottom: 15px;">
                 <strong id="gerenciar-nome-pedido">Pedido</strong><br>
                 <small>Vendidos: <span id="gerenciar-vendidos">0</span> / <span id="gerenciar-total">0</span></small>
             </div>
@@ -265,25 +106,23 @@
                 <input type="hidden" id="lanModo">
                 <input type="hidden" id="lanIdEditar">
                 <div class="form-group"><label>Cliente</label><input type="text" id="lanCliente" required></div>
-                <div class="form-group"><label>Quantidade Desta Venda</label><input type="number" id="lanQtd" required
-                        min="1"></div>
+                
                 <div style="display: flex; gap: 10px;">
-                    <div class="form-group" style="flex: 1;"><label>Valor (R$)</label><input type="number" id="lanValor"
-                            step="0.01" required></div>
-                    <div class="form-group" style="flex: 1;"><label>Tamanho</label>
-                        <select id="lanTamanho" required>
-                            <option value="Normal">Normal</option>
-                            <option value="Mini">Mini</option>
+                    <div class="form-group" style="flex: 1;"><label>Produto</label>
+                        <select id="lanProduto" required>
+                            <option value="">Selecione...</option>
+                            <option value="4 docinhos">4 docinhos</option>
+                            <option value="Brownie">Brownie</option>
                         </select>
                     </div>
+                    <div class="form-group" style="flex: 1;"><label>Qtd. desta Venda</label>
+                        <input type="number" id="lanQtd" required min="1">
+                    </div>
                 </div>
+
                 <div style="display: flex; gap: 10px;">
-                    <div class="form-group" style="flex: 1;"><label>Pagamento</label>
-                        <select id="lanPagamento" required>
-                            <option value="Pix">Pix</option>
-                            <option value="Dinheiro">Dinheiro</option>
-                            <option value="Cartão">Cartão</option>
-                        </select>
+                    <div class="form-group" style="flex: 1;"><label>Valor Total (R$)</label>
+                        <input type="number" id="lanValor" step="0.01" required>
                     </div>
                     <div class="form-group" style="flex: 1;"><label>Status</label>
                         <select id="lanStatus" required>
@@ -292,6 +131,7 @@
                         </select>
                     </div>
                 </div>
+                
                 <button type="submit" class="btn btn-success" id="btnSalvarLancamento">Salvar Venda</button>
             </form>
             <div id="msgLancamento" class="erro-msg" style="margin-top: 10px;"></div>
@@ -300,43 +140,39 @@
     </div>
 
     <script>
-        const urlAPI = 'https://script.google.com/macros/s/AKfycbz77ceVHMXr_7TYFF3n8jTcJUshfrRRsl1CyTA9QxAOCw2wajIJt7zFFR8gYM_Khbrv-w/exec';
+        // COLOQUE AQUI A SUA URL DA API (Mantenha a que está funcionando)
+        const urlAPI = 'https://script.google.com/macros/s/AKfycbxtWGIA1OMk4EzFKub7z5Lsx71vxL1py8-xLfiGfQerh99NRVUGHao4AYlQUo0qEK11zQ/exec';
 
         let todosPedidos = [];
         let pedidoAtual = null;
         let lancamentosAtuais = [];
         let totalVendidoAtual = 0;
 
-        async function fetchAPI(dados) {
-            dados.emailUsuario = "muriloaugusto.p9@gmail.com";
+        // Gatilho para preencher o valor automaticamente
+        document.getElementById('lanProduto').addEventListener('change', function(e) {
+            const campoValor = document.getElementById('lanValor');
+            if (e.target.value === '4 docinhos') {
+                campoValor.value = '12.00';
+            } else {
+                campoValor.value = ''; // Limpa se for Brownie ou outro
+            }
+        });
 
+        async function fetchAPI(dados) {
             try {
                 const response = await fetch(urlAPI, {
                     method: 'POST',
-                    mode: 'cors', // Força o modo cors
+                    mode: 'cors',
+                    redirect: 'follow',
                     body: JSON.stringify(dados)
-                    // REMOVEMOS os headers aqui para forçar uma "Simple Request"
                 });
-
                 const json = await response.json();
-
-                if (json.status === "erro") {
-                    alert(json.mensagem);
-                    return [];
-                }
+                if (json.status === "erro") { alert(json.mensagem); return []; }
                 return json;
-            } catch (e) {
-                console.error("Erro na API:", e);
-                // Se o erro persistir, tente abrir a urlAPI direto no navegador para ver se o Google não bloqueou seu IP
-                return [];
-            }
+            } catch (e) { console.error("Erro na API:", e); return []; }
         }
 
-        // Inicia o sistema direto na Home
-        window.onload = () => {
-            mudarTela('view-home');
-            carregarPedidos();
-        };
+        window.onload = () => { carregarPedidos(); };
 
         function mudarTela(idTela) {
             document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
@@ -351,7 +187,6 @@
                     select.innerHTML = '<option value="">Nenhum pedido</option>';
                     return;
                 }
-
                 select.innerHTML = '<option value="">-- Escolha --</option>';
                 [...todosPedidos].reverse().forEach(p => {
                     select.innerHTML += `<option value="${p.ID_Pedido}">#${p.ID_Pedido} - ${p.Descricao}</option>`;
@@ -362,6 +197,7 @@
                 select.innerHTML = '<option value="">Erro ao carregar</option>';
             }
         }
+
         async function atualizarDashboard() {
             const id = document.getElementById('selectPedido').value;
             if (!id) return document.getElementById('area-dashboard').style.display = 'none';
@@ -414,7 +250,7 @@
                     <div class="card-venda">
                         <div>
                             <strong>${l.Cliente}</strong> <span class="badge ${statusClass}">${statusText}</span><br>
-                            <small>${l.Qtd_Vendida} unid. | ${l.Tamanho} | ${valorBRL}</small>
+                            <small>${l.Qtd_Vendida} unid. | <b>${l.Produto}</b> | ${valorBRL}</small>
                         </div>
                         <button class="btn btn-edit" onclick="abrirFormularioEdicao(${l.ID_Lancamento})">Editar</button>
                     </div>
@@ -440,10 +276,9 @@
 
             const lancamento = lancamentosAtuais.find(l => l.ID_Lancamento == idLan);
             document.getElementById('lanCliente').value = lancamento.Cliente;
+            document.getElementById('lanProduto').value = lancamento.Produto;
             document.getElementById('lanQtd').value = lancamento.Qtd_Vendida;
             document.getElementById('lanValor').value = String(lancamento.Valor).replace(',', '.');
-            document.getElementById('lanTamanho').value = lancamento.Tamanho;
-            document.getElementById('lanPagamento').value = lancamento.Pagamento;
             document.getElementById('lanStatus').value = lancamento.Status || 'Pago';
         }
 
@@ -474,8 +309,7 @@
                 cliente: document.getElementById('lanCliente').value,
                 quantidade: qtdDesejada,
                 valor: document.getElementById('lanValor').value,
-                tamanho: document.getElementById('lanTamanho').value,
-                pagamento: document.getElementById('lanPagamento').value,
+                produto: document.getElementById('lanProduto').value, // Alterado aqui
                 status: document.getElementById('lanStatus').value
             };
 
@@ -508,5 +342,4 @@
 
     </script>
 </body>
-
 </html>
