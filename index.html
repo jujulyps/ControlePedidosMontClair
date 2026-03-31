@@ -38,10 +38,7 @@
             padding: 16px 16px 40px;
         }
 
-        .app-container {
-            max-width: 560px;
-            margin: 0 auto;
-        }
+        .app-container { max-width: 560px; margin: 0 auto; }
 
         /* ---- HEADER ---- */
         .brand-header {
@@ -50,23 +47,21 @@
             animation: fadeDown 0.6s ease both;
         }
         .brand-header img {
-            width: 110px;
-            height: 110px;
+            width: 110px; height: 110px;
             object-fit: contain;
             filter: drop-shadow(0 4px 16px rgba(44,26,14,0.18));
             border-radius: 50%;
         }
         .brand-tagline {
             font-family: 'Jost', sans-serif;
-            font-size: 11px;
-            font-weight: 400;
+            font-size: 11px; font-weight: 400;
             letter-spacing: 3.5px;
             color: var(--gold);
             text-transform: uppercase;
             margin-top: 6px;
         }
 
-        /* ---- CARD CONTAINER ---- */
+        /* ---- CARD ---- */
         .card {
             background: var(--white);
             border-radius: 16px;
@@ -83,8 +78,7 @@
         /* ---- SECTION TITLE ---- */
         .section-title {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 24px;
-            font-weight: 600;
+            font-size: 24px; font-weight: 600;
             color: var(--brown-deep);
             letter-spacing: 0.3px;
             display: flex;
@@ -97,21 +91,17 @@
 
         /* ---- BUTTONS ---- */
         .btn {
-            display: block;
-            width: 100%;
+            display: block; width: 100%;
             padding: 13px 18px;
-            border: none;
-            border-radius: 10px;
+            border: none; border-radius: 10px;
             cursor: pointer;
             font-family: 'Jost', sans-serif;
-            font-weight: 500;
-            font-size: 14px;
+            font-weight: 500; font-size: 14px;
             letter-spacing: 0.8px;
             text-transform: uppercase;
             margin-bottom: 10px;
             transition: all 0.2s ease;
-            position: relative;
-            overflow: hidden;
+            position: relative; overflow: hidden;
         }
         .btn:active { transform: scale(0.98); }
 
@@ -137,6 +127,13 @@
         }
         .btn-success:hover { box-shadow: 0 6px 20px rgba(58,125,68,0.4); transform: translateY(-1px); }
 
+        .btn-danger {
+            background: linear-gradient(135deg, #9b2335 0%, #7a1a28 100%);
+            color: white;
+            box-shadow: 0 4px 14px rgba(155,35,53,0.3);
+        }
+        .btn-danger:hover { box-shadow: 0 6px 20px rgba(155,35,53,0.4); transform: translateY(-1px); }
+
         .btn-edit {
             background: var(--cream);
             color: var(--brown-mid);
@@ -152,6 +149,22 @@
             white-space: nowrap;
         }
         .btn-edit:hover { background: var(--cream-dark); }
+
+        .btn-delete-sm {
+            background: rgba(155,35,53,0.08);
+            color: var(--red-err);
+            border: 1px solid rgba(155,35,53,0.2);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-family: 'Jost', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            letter-spacing: 0.3px;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .btn-delete-sm:hover { background: rgba(155,35,53,0.15); }
 
         .btn-gear {
             background: var(--cream);
@@ -173,8 +186,7 @@
         label {
             display: block;
             margin-bottom: 5px;
-            font-size: 11px;
-            font-weight: 500;
+            font-size: 11px; font-weight: 500;
             letter-spacing: 1.2px;
             text-transform: uppercase;
             color: var(--gold);
@@ -228,8 +240,7 @@
         }
         .card-resumo h4 {
             font-family: 'Jost', sans-serif;
-            font-size: 10px;
-            font-weight: 500;
+            font-size: 10px; font-weight: 500;
             letter-spacing: 1.5px;
             text-transform: uppercase;
             color: var(--gold);
@@ -237,8 +248,7 @@
         }
         .card-resumo p {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 26px;
-            font-weight: 600;
+            font-size: 26px; font-weight: 600;
             color: var(--brown-deep);
         }
         .valor-dinheiro { color: var(--green-ok) !important; font-size: 28px !important; }
@@ -260,8 +270,7 @@
         }
         .card-item:hover { box-shadow: 0 3px 12px var(--shadow-warm); }
         .card-item .item-info strong {
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 14px; font-weight: 600;
             color: var(--brown-deep);
             display: block;
             margin-bottom: 3px;
@@ -271,12 +280,16 @@
             color: var(--brown-light);
             line-height: 1.5;
         }
+        .card-item .item-actions {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
 
         .badge {
             padding: 3px 9px;
             border-radius: 20px;
-            font-size: 10px;
-            font-weight: 600;
+            font-size: 10px; font-weight: 600;
             letter-spacing: 0.8px;
             text-transform: uppercase;
         }
@@ -294,8 +307,7 @@
         }
         .gerenciar-info strong {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 17px;
-            font-weight: 600;
+            font-size: 17px; font-weight: 600;
             color: var(--brown-deep);
             display: block;
         }
@@ -304,6 +316,50 @@
             color: var(--brown-light);
             letter-spacing: 0.3px;
         }
+
+        /* ---- CONFIRMAÇÃO EXCLUSÃO ---- */
+        .confirm-box {
+            background: rgba(155,35,53,0.06);
+            border: 1px solid rgba(155,35,53,0.2);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-top: 12px;
+            display: none;
+        }
+        .confirm-box.visible { display: block; }
+        .confirm-box p {
+            font-size: 13px;
+            color: var(--red-err);
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+        .confirm-box-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .confirm-box-actions button {
+            flex: 1;
+            padding: 9px 14px;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Jost', sans-serif;
+            font-weight: 500;
+            font-size: 13px;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: all 0.15s;
+        }
+        .confirm-sim {
+            background: var(--red-err);
+            color: white;
+        }
+        .confirm-sim:hover { background: #7a1a28; }
+        .confirm-nao {
+            background: var(--cream);
+            color: var(--brown-mid);
+            border: 1px solid var(--cream-dark) !important;
+        }
+        .confirm-nao:hover { background: var(--cream-dark); }
 
         /* ---- ERRO ---- */
         .erro-msg {
@@ -318,16 +374,20 @@
         }
         .erro-msg.visible { display: block; }
 
-        /* ---- DIVIDER ---- */
-        .divider {
-            height: 1px;
-            background: var(--cream-dark);
-            margin: 16px 0;
-        }
-
         /* ---- PAIR INPUTS ---- */
         .input-row { display: flex; gap: 12px; }
         .input-row .form-group { flex: 1; }
+
+        /* ---- HOME ACTIONS ---- */
+        .home-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .home-actions .btn {
+            margin-bottom: 0;
+            flex: 1;
+        }
 
         /* ---- ANIMATIONS ---- */
         @keyframes fadeDown {
@@ -343,6 +403,7 @@
         @media (max-width: 400px) {
             .card { padding: 18px 16px; }
             .input-row { flex-direction: column; gap: 0; }
+            .home-actions { flex-direction: column; }
         }
 
         /* ---- ORNAMENT ---- */
@@ -373,8 +434,13 @@
                     Painel Geral
                     <button class="btn-gear" onclick="abrirGerenciadorProdutos()">⚙ Produtos</button>
                 </div>
-                <button class="btn btn-primary" onclick="mudarTela('view-novo-pedido')">+ Criar Novo Pedido</button>
-                <div class="form-group" style="margin-top: 6px;">
+
+                <div class="home-actions">
+                    <button class="btn btn-primary" onclick="abrirFormularioPedido()">+ Novo Pedido</button>
+                    <button class="btn btn-secondary" style="font-size:13px;" onclick="abrirGerenciadorPedidos()">☰ Pedidos</button>
+                </div>
+
+                <div class="form-group">
                     <label>Selecionar Pedido</label>
                     <select id="selectPedido" class="select-destaque" onchange="atualizarDashboard()">
                         <option value="">Carregando...</option>
@@ -408,6 +474,45 @@
                 </div>
             </div>
 
+            <!-- GERENCIAR PEDIDOS (LISTA) -->
+            <div id="view-gerenciar-pedidos" class="view">
+                <div class="section-title">Pedidos</div>
+                <button class="btn btn-secondary" onclick="voltarParaHome()">← Voltar ao Painel</button>
+                <button class="btn btn-primary" onclick="abrirFormularioPedido()">+ Novo Pedido</button>
+                <div id="lista-pedidos-container" class="lista-itens"></div>
+            </div>
+
+            <!-- FORM PEDIDO (CRIAR / EDITAR) -->
+            <div id="view-form-pedido" class="view">
+                <div class="section-title" id="titulo-form-pedido">Novo Pedido</div>
+                <button class="btn btn-secondary" id="btnVoltarFormPedido" onclick="voltarDaFormPedido()">← Cancelar</button>
+                <form id="formNovoPedido" style="margin-top: 8px;">
+                    <input type="hidden" id="pedidoModo" value="novo">
+                    <input type="hidden" id="pedidoIdEditar" value="">
+                    <div class="form-group">
+                        <label>Descrição</label>
+                        <input type="text" id="descPedido" placeholder="Ex: Festa de Aniversário" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Quantidade Total</label>
+                        <input type="number" id="qtdTotalPedido" placeholder="100" required min="1">
+                    </div>
+                    <button type="submit" class="btn btn-success" id="btnSalvarPedido">Criar Pedido</button>
+                </form>
+
+                <!-- Zona de exclusão — só aparece no modo edição -->
+                <div id="zona-exclusao" style="display:none; margin-top: 6px;">
+                    <div class="confirm-box" id="confirm-excluir-pedido">
+                        <p>⚠ Isso irá excluir o pedido e <strong>todos os lançamentos</strong> vinculados a ele. Essa ação não pode ser desfeita.</p>
+                        <div class="confirm-box-actions">
+                            <button class="confirm-sim" onclick="confirmarExclusaoPedido()">Sim, excluir</button>
+                            <button class="confirm-nao" onclick="fecharConfirmacao()">Cancelar</button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-danger" id="btnExcluirPedido" onclick="solicitarExclusaoPedido()">🗑 Excluir este Pedido</button>
+                </div>
+            </div>
+
             <!-- PRODUTOS -->
             <div id="view-produtos" class="view">
                 <div class="section-title">Produtos</div>
@@ -431,23 +536,6 @@
                         <input type="number" id="prodPreco" step="0.01" placeholder="0,00" required>
                     </div>
                     <button type="submit" class="btn btn-success" id="btnSalvarProduto">Salvar Produto</button>
-                </form>
-            </div>
-
-            <!-- NOVO PEDIDO -->
-            <div id="view-novo-pedido" class="view">
-                <div class="section-title">Novo Lote</div>
-                <form id="formNovoPedido">
-                    <div class="form-group">
-                        <label>Descrição</label>
-                        <input type="text" id="descPedido" placeholder="Ex: Festa de Aniversário" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Quantidade Total</label>
-                        <input type="number" id="qtdTotalPedido" placeholder="100" required min="1">
-                    </div>
-                    <button type="submit" class="btn btn-success" id="btnSalvarPedido">Criar Pedido</button>
-                    <button type="button" class="btn btn-secondary" onclick="voltarParaHome()">Cancelar</button>
                 </form>
             </div>
 
@@ -511,13 +599,16 @@
     </div><!-- /.app-container -->
 
     <script>
-        const urlAPI = 'https://script.google.com/macros/s/AKfycbxiIly_3K910voX-9smKrSqWCOqFOvEP7gVed721pe8X6OptGYhExOCiUgwgbqo1h0lHw/exec';
+        const urlAPI = 'https://script.google.com/macros/s/AKfycbwki0hcnpx8u5JRMpJL4aqnfwLI0v2_v26hp-a73jVu6VroBQrSzeWqQJMM1l4PPiVV-g/exec';
 
         let todosPedidos = [];
         let pedidoAtual = null;
         let lancamentosAtuais = [];
         let todosProdutos = [];
         let totalVendidoAtual = 0;
+
+        // De qual tela veio para o formulário de pedido
+        let origemFormPedido = 'view-home';
 
         window.onload = async () => {
             await carregarProdutosBase();
@@ -543,7 +634,140 @@
             carregarPedidos();
         }
 
-        // === PRODUTOS ===
+        // ============================================================
+        // PEDIDOS — FORMULÁRIO (CRIAR / EDITAR)
+        // ============================================================
+
+        function abrirFormularioPedido(id = null, origem = 'view-home') {
+            origemFormPedido = origem;
+            mudarTela('view-form-pedido');
+            document.getElementById('formNovoPedido').reset();
+            fecharConfirmacao();
+
+            if (id) {
+                const pedido = todosPedidos.find(p => p.ID_Pedido == id);
+                document.getElementById('titulo-form-pedido').innerText = 'Editar Pedido';
+                document.getElementById('btnSalvarPedido').innerText = 'Salvar Alterações';
+                document.getElementById('pedidoModo').value = 'editar';
+                document.getElementById('pedidoIdEditar').value = id;
+                document.getElementById('descPedido').value = pedido.Descricao;
+                document.getElementById('qtdTotalPedido').value = pedido.Qtd_Total;
+                document.getElementById('zona-exclusao').style.display = 'block';
+                document.getElementById('confirm-excluir-pedido').classList.remove('visible');
+            } else {
+                document.getElementById('titulo-form-pedido').innerText = 'Novo Pedido';
+                document.getElementById('btnSalvarPedido').innerText = 'Criar Pedido';
+                document.getElementById('pedidoModo').value = 'novo';
+                document.getElementById('pedidoIdEditar').value = '';
+                document.getElementById('zona-exclusao').style.display = 'none';
+            }
+        }
+
+        function voltarDaFormPedido() {
+            mudarTela(origemFormPedido);
+            if (origemFormPedido === 'view-gerenciar-pedidos') {
+                abrirGerenciadorPedidos();
+            } else {
+                carregarPedidos();
+            }
+        }
+
+        document.getElementById('formNovoPedido').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btnSalvarPedido');
+            const modo = document.getElementById('pedidoModo').value;
+            btn.innerText = 'Salvando…'; btn.disabled = true;
+
+            if (modo === 'editar') {
+                await fetchAPI({
+                    acao: 'editarPedido',
+                    idPedido: document.getElementById('pedidoIdEditar').value,
+                    descricao: document.getElementById('descPedido').value,
+                    qtdTotal: document.getElementById('qtdTotalPedido').value
+                });
+            } else {
+                await fetchAPI({
+                    acao: 'criarPedido',
+                    descricao: document.getElementById('descPedido').value,
+                    qtdTotal: document.getElementById('qtdTotalPedido').value
+                });
+            }
+
+            btn.innerText = modo === 'editar' ? 'Salvar Alterações' : 'Criar Pedido';
+            btn.disabled = false;
+            await carregarPedidos();
+
+            if (origemFormPedido === 'view-gerenciar-pedidos') {
+                abrirGerenciadorPedidos();
+            } else {
+                mudarTela('view-home');
+            }
+        });
+
+        // ============================================================
+        // PEDIDOS — EXCLUSÃO
+        // ============================================================
+
+        function solicitarExclusaoPedido() {
+            document.getElementById('btnExcluirPedido').style.display = 'none';
+            document.getElementById('confirm-excluir-pedido').classList.add('visible');
+        }
+
+        function fecharConfirmacao() {
+            const box = document.getElementById('confirm-excluir-pedido');
+            if (box) box.classList.remove('visible');
+            const btn = document.getElementById('btnExcluirPedido');
+            if (btn) btn.style.display = 'block';
+        }
+
+        async function confirmarExclusaoPedido() {
+            const idPedido = document.getElementById('pedidoIdEditar').value;
+            const btn = document.getElementById('btnExcluirPedido');
+            btn.innerText = 'Excluindo…'; btn.disabled = true;
+
+            await fetchAPI({ acao: 'excluirPedido', idPedido });
+
+            await carregarPedidos();
+
+            if (origemFormPedido === 'view-gerenciar-pedidos') {
+                abrirGerenciadorPedidos();
+            } else {
+                voltarParaHome();
+            }
+        }
+
+        // ============================================================
+        // GERENCIAR PEDIDOS — LISTA
+        // ============================================================
+
+        function abrirGerenciadorPedidos() {
+            mudarTela('view-gerenciar-pedidos');
+            const container = document.getElementById('lista-pedidos-container');
+            container.innerHTML = '';
+
+            if (!todosPedidos || todosPedidos.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color: var(--gold); padding: 20px;">Nenhum pedido cadastrado.</p>';
+                return;
+            }
+
+            [...todosPedidos].reverse().forEach(p => {
+                container.innerHTML += `
+                <div class="card-item">
+                    <div class="item-info">
+                        <strong>#${p.ID_Pedido} — ${p.Descricao}</strong>
+                        <small>${p.Data || '—'} &nbsp;·&nbsp; ${p.Qtd_Total} unidades</small>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-edit" onclick="abrirFormularioPedido(${p.ID_Pedido}, 'view-gerenciar-pedidos')">Editar</button>
+                    </div>
+                </div>`;
+            });
+        }
+
+        // ============================================================
+        // PRODUTOS
+        // ============================================================
+
         async function carregarProdutosBase() {
             todosProdutos = await fetchAPI({ acao: 'listarProdutos' });
             const selectProd = document.getElementById('lanProduto');
@@ -616,13 +840,17 @@
             abrirGerenciadorProdutos();
         });
 
-        // === PEDIDOS ===
+        // ============================================================
+        // PEDIDOS — SELECT / DASHBOARD
+        // ============================================================
+
         async function carregarPedidos() {
             const select = document.getElementById('selectPedido');
             try {
                 todosPedidos = await fetchAPI({ acao: 'listarPedidos' });
                 if (todosPedidos.length === 0) {
                     select.innerHTML = '<option value="">Nenhum pedido criado</option>';
+                    document.getElementById('area-dashboard').style.display = 'none';
                     return;
                 }
                 select.innerHTML = '<option value="">— Escolha um pedido —</option>';
@@ -656,6 +884,10 @@
             document.getElementById('dashFaltam').innerText = pedidoAtual.Qtd_Total - vendidos;
             document.getElementById('dashRecebido').innerText = recebido.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         }
+
+        // ============================================================
+        // LANÇAMENTOS
+        // ============================================================
 
         function abrirGerenciador() {
             mudarTela('view-gerenciar');
@@ -722,7 +954,7 @@
                 return;
             }
             const btn = document.getElementById('btnSalvarLancamento');
-            btn.innerText = 'Salvando…'; btn.disabled = true; 
+            btn.innerText = 'Salvando…'; btn.disabled = true;
             msg.innerText = ''; msg.classList.remove('visible');
             await fetchAPI({
                 acao: (modo === 'novo') ? 'adicionarLancamento' : 'editarLancamento',
@@ -737,20 +969,6 @@
             btn.innerText = 'Salvar Venda'; btn.disabled = false;
             await atualizarDashboard();
             abrirGerenciador();
-        });
-
-        document.getElementById('formNovoPedido').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('btnSalvarPedido');
-            btn.innerText = 'Criando…'; btn.disabled = true;
-            await fetchAPI({
-                acao: 'criarPedido',
-                descricao: document.getElementById('descPedido').value,
-                qtdTotal: document.getElementById('qtdTotalPedido').value
-            });
-            document.getElementById('formNovoPedido').reset();
-            btn.innerText = 'Criar Pedido'; btn.disabled = false;
-            voltarParaHome();
         });
     </script>
 </body>
