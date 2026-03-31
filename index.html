@@ -307,19 +307,17 @@
         let lancamentosAtuais = [];
         let totalVendidoAtual = 0;
 
-        // Função central de comunicação sem o campo de senha
         async function fetchAPI(dados) {
-            // Adicionamos o e-mail dentro de cada requisição
             dados.emailUsuario = "muriloaugusto.p9@gmail.com";
 
-            const config = {
-                method: 'POST',
-                body: JSON.stringify(dados),
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-            };
-
             try {
-                const response = await fetch(urlAPI, config);
+                const response = await fetch(urlAPI, {
+                    method: 'POST',
+                    mode: 'cors', // Força o modo cors
+                    body: JSON.stringify(dados)
+                    // REMOVEMOS os headers aqui para forçar uma "Simple Request"
+                });
+
                 const json = await response.json();
 
                 if (json.status === "erro") {
@@ -328,7 +326,8 @@
                 }
                 return json;
             } catch (e) {
-                console.error("Erro:", e);
+                console.error("Erro na API:", e);
+                // Se o erro persistir, tente abrir a urlAPI direto no navegador para ver se o Google não bloqueou seu IP
                 return [];
             }
         }
