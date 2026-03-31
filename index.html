@@ -3,156 +3,514 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MontClair</title>
+    <title>MontClair — Doces Artesanais</title>
     <link rel="icon" type="image/png" href="icone.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; }
-        .app-container { max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
+        :root {
+            --cream: #f5efe4;
+            --cream-dark: #ede3d1;
+            --brown-deep: #2c1a0e;
+            --brown-mid: #5c3317;
+            --brown-light: #8b5e3c;
+            --gold: #a67c4e;
+            --gold-light: #c9a77a;
+            --accent: #c17f24;
+            --white: #fdfaf6;
+            --shadow-warm: rgba(44, 26, 14, 0.12);
+            --shadow-deep: rgba(44, 26, 14, 0.22);
+            --green-ok: #3a7d44;
+            --red-err: #9b2335;
+            --blue-info: #2c5f8a;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Jost', sans-serif;
+            background-color: var(--cream);
+            background-image:
+                radial-gradient(ellipse at 20% 50%, rgba(166,124,78,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(166,124,78,0.06) 0%, transparent 50%);
+            min-height: 100vh;
+            color: var(--brown-deep);
+            padding: 16px 16px 40px;
+        }
+
+        .app-container {
+            max-width: 560px;
+            margin: 0 auto;
+        }
+
+        /* ---- HEADER ---- */
+        .brand-header {
+            text-align: center;
+            padding: 28px 0 22px;
+            animation: fadeDown 0.6s ease both;
+        }
+        .brand-header img {
+            width: 110px;
+            height: 110px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 16px rgba(44,26,14,0.18));
+            border-radius: 50%;
+        }
+        .brand-tagline {
+            font-family: 'Jost', sans-serif;
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 3.5px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-top: 6px;
+        }
+
+        /* ---- CARD CONTAINER ---- */
+        .card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 24px 22px;
+            box-shadow: 0 2px 8px var(--shadow-warm), 0 8px 32px var(--shadow-deep);
+            animation: fadeUp 0.5s ease both;
+            border: 1px solid rgba(166,124,78,0.15);
+        }
+
+        /* ---- VIEWS ---- */
         .view { display: none; }
         .view.active { display: block; }
-        h2 { color: #333; border-bottom: 2px solid #ff9800; padding-bottom: 10px; margin-top: 0; display: flex; justify-content: space-between; align-items: center;}
-        .btn { padding: 12px 15px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: white; width: 100%; box-sizing: border-box; margin-bottom: 10px; font-size: 15px; }
-        .btn-primary { background-color: #ff9800; }
-        .btn-secondary { background-color: #607d8b; }
-        .btn-success { background-color: #4CAF50; }
-        .btn-edit { background-color: #2196F3; padding: 6px 12px; font-size: 12px; width: auto; margin: 0; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; color: #444; }
-        input, select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 15px; }
-        .select-destaque { border: 2px solid #ff9800; background-color: #fffaf0; font-weight: bold; }
-        .grid-dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; margin-bottom: 20px; }
-        .card-resumo { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08); text-align: center; border-bottom: 4px solid #ccc; }
-        .card-resumo.destaque { grid-column: span 2; background: #e8f5e9; border-bottom-color: #4CAF50; }
-        .card-resumo h4 { margin: 0 0 8px 0; font-size: 12px; color: #666; text-transform: uppercase; }
-        .card-resumo p { margin: 0; font-size: 24px; font-weight: bold; color: #333; }
-        .valor-dinheiro { color: #2e7d32 !important; font-size: 28px !important; }
-        .lista-itens { margin-top: 15px; display: flex; flex-direction: column; gap: 10px; }
-        .card-item { background: #fafafa; border: 1px solid #ddd; padding: 10px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; }
-        .badge { padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; color: white; }
-        .bg-pago { background-color: #4CAF50; }
-        .bg-pendente { background-color: #ff9800; }
-        .erro-msg { color: red; font-size: 14px; text-align: center; margin-bottom: 10px; }
+
+        /* ---- SECTION TITLE ---- */
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--brown-deep);
+            letter-spacing: 0.3px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 14px;
+            margin-bottom: 18px;
+            border-bottom: 1px solid var(--cream-dark);
+        }
+
+        /* ---- BUTTONS ---- */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 13px 18px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Jost', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn:active { transform: scale(0.98); }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--brown-mid) 100%);
+            color: var(--white);
+            box-shadow: 0 4px 14px rgba(193,127,36,0.35);
+        }
+        .btn-primary:hover { box-shadow: 0 6px 20px rgba(193,127,36,0.45); transform: translateY(-1px); }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--brown-light);
+            border: 1px solid var(--cream-dark);
+            font-size: 13px;
+        }
+        .btn-secondary:hover { background: var(--cream); }
+
+        .btn-success {
+            background: linear-gradient(135deg, #3a7d44 0%, #2d6035 100%);
+            color: white;
+            box-shadow: 0 4px 14px rgba(58,125,68,0.3);
+        }
+        .btn-success:hover { box-shadow: 0 6px 20px rgba(58,125,68,0.4); transform: translateY(-1px); }
+
+        .btn-edit {
+            background: var(--cream);
+            color: var(--brown-mid);
+            border: 1px solid var(--cream-dark);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-family: 'Jost', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            letter-spacing: 0.3px;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .btn-edit:hover { background: var(--cream-dark); }
+
+        .btn-gear {
+            background: var(--cream);
+            color: var(--brown-mid);
+            border: 1px solid var(--gold-light);
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-family: 'Jost', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: all 0.15s;
+        }
+        .btn-gear:hover { background: var(--cream-dark); }
+
+        /* ---- FORM ---- */
+        .form-group { margin-bottom: 14px; }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+        input, select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid var(--cream-dark);
+            border-radius: 10px;
+            box-sizing: border-box;
+            font-size: 14px;
+            font-family: 'Jost', sans-serif;
+            color: var(--brown-deep);
+            background: var(--white);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            -webkit-appearance: none;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(166,124,78,0.12);
+        }
+        .select-destaque {
+            border-color: var(--gold-light);
+            background: linear-gradient(to right, var(--white), #fdf7ee);
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        /* ---- DASHBOARD GRID ---- */
+        .grid-dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 18px 0;
+        }
+        .card-resumo {
+            background: var(--white);
+            padding: 16px 14px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--cream-dark);
+            box-shadow: 0 2px 6px var(--shadow-warm);
+            transition: transform 0.2s;
+        }
+        .card-resumo:hover { transform: translateY(-2px); }
+        .card-resumo.destaque {
+            grid-column: span 2;
+            background: linear-gradient(135deg, #edf7ef 0%, #d9f0dd 100%);
+            border-color: rgba(58,125,68,0.25);
+        }
+        .card-resumo h4 {
+            font-family: 'Jost', sans-serif;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+        .card-resumo p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 26px;
+            font-weight: 600;
+            color: var(--brown-deep);
+        }
+        .valor-dinheiro { color: var(--green-ok) !important; font-size: 28px !important; }
+        .valor-azul { color: var(--blue-info) !important; }
+        .valor-vermelho { color: var(--red-err) !important; }
+
+        /* ---- LISTA ---- */
+        .lista-itens { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+        .card-item {
+            background: var(--white);
+            border: 1px solid var(--cream-dark);
+            padding: 13px 14px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            transition: box-shadow 0.2s;
+        }
+        .card-item:hover { box-shadow: 0 3px 12px var(--shadow-warm); }
+        .card-item .item-info strong {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--brown-deep);
+            display: block;
+            margin-bottom: 3px;
+        }
+        .card-item .item-info small {
+            font-size: 12px;
+            color: var(--brown-light);
+            line-height: 1.5;
+        }
+
+        .badge {
+            padding: 3px 9px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+        .bg-pago { background: rgba(58,125,68,0.12); color: var(--green-ok); border: 1px solid rgba(58,125,68,0.25); }
+        .bg-pendente { background: rgba(193,127,36,0.12); color: var(--accent); border: 1px solid rgba(193,127,36,0.3); }
+
+        /* ---- GERENCIAR HEADER ---- */
+        .gerenciar-info {
+            background: linear-gradient(135deg, #f0e8d9 0%, #e8dcc8 100%);
+            padding: 12px 16px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 16px;
+            border: 1px solid rgba(166,124,78,0.2);
+        }
+        .gerenciar-info strong {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--brown-deep);
+            display: block;
+        }
+        .gerenciar-info small {
+            font-size: 12px;
+            color: var(--brown-light);
+            letter-spacing: 0.3px;
+        }
+
+        /* ---- ERRO ---- */
+        .erro-msg {
+            color: var(--red-err);
+            font-size: 13px;
+            text-align: center;
+            padding: 8px 12px;
+            background: rgba(155,35,53,0.06);
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+        .erro-msg.visible { display: block; }
+
+        /* ---- DIVIDER ---- */
+        .divider {
+            height: 1px;
+            background: var(--cream-dark);
+            margin: 16px 0;
+        }
+
+        /* ---- PAIR INPUTS ---- */
+        .input-row { display: flex; gap: 12px; }
+        .input-row .form-group { flex: 1; }
+
+        /* ---- ANIMATIONS ---- */
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 400px) {
+            .card { padding: 18px 16px; }
+            .input-row { flex-direction: column; gap: 0; }
+        }
+
+        /* ---- ORNAMENT ---- */
+        .ornament {
+            text-align: center;
+            color: var(--gold-light);
+            font-size: 18px;
+            letter-spacing: 6px;
+            margin: 6px 0;
+            opacity: 0.7;
+        }
     </style>
 </head>
 
 <body>
-
     <div class="app-container">
 
-        <div id="view-home" class="view active">
-            <h2>Painel Geral <button class="btn-edit" style="background:#607d8b;" onclick="abrirGerenciadorProdutos()">⚙️ Produtos</button></h2>
-            <button class="btn btn-primary" onclick="mudarTela('view-novo-pedido')">+ Criar Novo Pedido</button>
-            <div class="form-group" style="margin-top: 25px;">
-                <label>Selecione um Pedido para ver o Resumo:</label>
-                <select id="selectPedido" class="select-destaque" onchange="atualizarDashboard()">
-                    <option value="">Carregando...</option>
-                </select>
-            </div>
-            <div id="area-dashboard" style="display: none;">
-                <div class="grid-dashboard">
-                    <div class="card-resumo destaque">
-                        <h4>Total Recebido (Pagos)</h4>
-                        <p id="dashRecebido" class="valor-dinheiro">R$ 0,00</p>
-                    </div>
-                    <div class="card-resumo">
-                        <h4>Qtd Lote (Total)</h4>
-                        <p id="dashTotal">0</p>
-                    </div>
-                    <div class="card-resumo">
-                        <h4>Data</h4>
-                        <p id="dashData" style="font-size: 16px; padding-top:5px;">--</p>
-                    </div>
-                    <div class="card-resumo" style="border-bottom-color: #2196F3;">
-                        <h4>Itens Vendidos</h4>
-                        <p id="dashVendidos" style="color: #1976d2;">0</p>
-                    </div>
-                    <div class="card-resumo" style="border-bottom-color: #f44336;">
-                        <h4>Quantos Faltam</h4>
-                        <p id="dashFaltam" style="color: #d32f2f;">0</p>
-                    </div>
+        <div class="brand-header">
+            <img src="logo_montclair.png">
+            <p class="brand-tagline">Gestão de Pedidos</p>
+        </div>
+
+        <div class="card">
+
+            <!-- HOME -->
+            <div id="view-home" class="view active">
+                <div class="section-title">
+                    Painel Geral
+                    <button class="btn-gear" onclick="abrirGerenciadorProdutos()">⚙ Produtos</button>
                 </div>
-                <button class="btn btn-success" onclick="abrirGerenciador()">Gerenciar Lançamentos</button>
+                <button class="btn btn-primary" onclick="mudarTela('view-novo-pedido')">+ Criar Novo Pedido</button>
+                <div class="form-group" style="margin-top: 6px;">
+                    <label>Selecionar Pedido</label>
+                    <select id="selectPedido" class="select-destaque" onchange="atualizarDashboard()">
+                        <option value="">Carregando...</option>
+                    </select>
+                </div>
+
+                <div id="area-dashboard" style="display: none;">
+                    <div class="grid-dashboard">
+                        <div class="card-resumo destaque">
+                            <h4>Total Recebido</h4>
+                            <p id="dashRecebido" class="valor-dinheiro">R$ 0,00</p>
+                        </div>
+                        <div class="card-resumo">
+                            <h4>Total do Lote</h4>
+                            <p id="dashTotal">0</p>
+                        </div>
+                        <div class="card-resumo">
+                            <h4>Data</h4>
+                            <p id="dashData" style="font-size:16px; padding-top:6px; font-family:'Jost',sans-serif;">--</p>
+                        </div>
+                        <div class="card-resumo">
+                            <h4>Itens Vendidos</h4>
+                            <p id="dashVendidos" class="valor-azul">0</p>
+                        </div>
+                        <div class="card-resumo">
+                            <h4>Faltam</h4>
+                            <p id="dashFaltam" class="valor-vermelho">0</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-success" onclick="abrirGerenciador()">Gerenciar Lançamentos</button>
+                </div>
             </div>
-        </div>
 
-        <div id="view-produtos" class="view">
-            <h2>Gerenciar Produtos</h2>
-            <button class="btn btn-secondary" onclick="voltarParaHome()">← Voltar ao Painel</button>
-            <button class="btn btn-success" onclick="abrirFormularioProduto()">+ Novo Produto</button>
-            <div id="lista-produtos-container" class="lista-itens"></div>
-        </div>
-
-        <div id="view-form-produto" class="view">
-            <h2 id="titulo-form-produto">Novo Produto</h2>
-            <button class="btn btn-secondary" onclick="mudarTela('view-produtos')">← Cancelar</button>
-            <form id="formProduto">
-                <input type="hidden" id="prodIdEditar">
-                <div class="form-group"><label>Nome do Produto (Ex: 4 docinhos)</label><input type="text" id="prodNome" required></div>
-                <div class="form-group"><label>Preço Unitário (R$)</label><input type="number" id="prodPreco" step="0.01" required></div>
-                <button type="submit" class="btn btn-success" id="btnSalvarProduto">Salvar Produto</button>
-            </form>
-        </div>
-
-        <div id="view-novo-pedido" class="view">
-            <h2>Novo Lote / Pedido</h2>
-            <form id="formNovoPedido">
-                <div class="form-group"><label>Descrição</label><input type="text" id="descPedido" required></div>
-                <div class="form-group"><label>Quantidade Total</label><input type="number" id="qtdTotalPedido" required min="1"></div>
-                <button type="submit" class="btn btn-success" id="btnSalvarPedido">Salvar</button>
-                <button type="button" class="btn btn-secondary" onclick="voltarParaHome()">Cancelar</button>
-            </form>
-        </div>
-
-        <div id="view-gerenciar" class="view">
-            <h2>Lançamentos</h2>
-            <button class="btn btn-secondary" onclick="voltarParaHome()">← Voltar ao Painel</button>
-            <div style="background: #e3f2fd; padding: 10px; border-radius: 8px; text-align: center; margin-bottom: 15px;">
-                <strong id="gerenciar-nome-pedido">Pedido</strong><br>
-                <small>Vendidos: <span id="gerenciar-vendidos">0</span> / <span id="gerenciar-total">0</span></small>
+            <!-- PRODUTOS -->
+            <div id="view-produtos" class="view">
+                <div class="section-title">Produtos</div>
+                <button class="btn btn-secondary" onclick="voltarParaHome()">← Voltar ao Painel</button>
+                <button class="btn btn-primary" onclick="abrirFormularioProduto()">+ Novo Produto</button>
+                <div id="lista-produtos-container" class="lista-itens"></div>
             </div>
-            <button class="btn btn-success" id="btnNovaVenda" onclick="abrirFormularioVenda()">+ Nova Venda</button>
-            <div id="lista-vendas-container" class="lista-itens"></div>
-        </div>
 
-        <div id="view-form-venda" class="view">
-            <h2 id="titulo-form-venda">Adicionar Venda</h2>
-            <button class="btn btn-secondary" onclick="mudarTela('view-gerenciar')">← Cancelar</button>
-            <form id="formLancamento">
-                <input type="hidden" id="lanModo">
-                <input type="hidden" id="lanIdEditar">
-                <div class="form-group"><label>Cliente</label><input type="text" id="lanCliente" required></div>
-                
-                <div style="display: flex; gap: 10px;">
-                    <div class="form-group" style="flex: 1;"><label>Produto</label>
-                        <select id="lanProduto" required>
+            <!-- FORM PRODUTO -->
+            <div id="view-form-produto" class="view">
+                <div class="section-title" id="titulo-form-produto">Novo Produto</div>
+                <button class="btn btn-secondary" onclick="mudarTela('view-produtos')">← Cancelar</button>
+                <form id="formProduto" style="margin-top: 8px;">
+                    <input type="hidden" id="prodIdEditar">
+                    <div class="form-group">
+                        <label>Nome do Produto</label>
+                        <input type="text" id="prodNome" placeholder="Ex: 4 docinhos" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Preço Unitário (R$)</label>
+                        <input type="number" id="prodPreco" step="0.01" placeholder="0,00" required>
+                    </div>
+                    <button type="submit" class="btn btn-success" id="btnSalvarProduto">Salvar Produto</button>
+                </form>
+            </div>
+
+            <!-- NOVO PEDIDO -->
+            <div id="view-novo-pedido" class="view">
+                <div class="section-title">Novo Lote</div>
+                <form id="formNovoPedido">
+                    <div class="form-group">
+                        <label>Descrição</label>
+                        <input type="text" id="descPedido" placeholder="Ex: Festa de Aniversário" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Quantidade Total</label>
+                        <input type="number" id="qtdTotalPedido" placeholder="100" required min="1">
+                    </div>
+                    <button type="submit" class="btn btn-success" id="btnSalvarPedido">Criar Pedido</button>
+                    <button type="button" class="btn btn-secondary" onclick="voltarParaHome()">Cancelar</button>
+                </form>
+            </div>
+
+            <!-- GERENCIAR LANÇAMENTOS -->
+            <div id="view-gerenciar" class="view">
+                <div class="section-title">Lançamentos</div>
+                <button class="btn btn-secondary" onclick="voltarParaHome()">← Voltar ao Painel</button>
+                <div class="gerenciar-info">
+                    <strong id="gerenciar-nome-pedido">Pedido</strong>
+                    <small>Vendidos: <span id="gerenciar-vendidos">0</span> de <span id="gerenciar-total">0</span> unidades</small>
+                </div>
+                <button class="btn btn-primary" onclick="abrirFormularioVenda()">+ Nova Venda</button>
+                <div id="lista-vendas-container" class="lista-itens"></div>
+            </div>
+
+            <!-- FORM VENDA -->
+            <div id="view-form-venda" class="view">
+                <div class="section-title" id="titulo-form-venda">Nova Venda</div>
+                <button class="btn btn-secondary" onclick="mudarTela('view-gerenciar')">← Cancelar</button>
+                <form id="formLancamento" style="margin-top: 8px;">
+                    <input type="hidden" id="lanModo">
+                    <input type="hidden" id="lanIdEditar">
+                    <div class="form-group">
+                        <label>Cliente</label>
+                        <input type="text" id="lanCliente" placeholder="Nome do cliente" required>
+                    </div>
+                    <div class="input-row">
+                        <div class="form-group">
+                            <label>Produto</label>
+                            <select id="lanProduto" required>
+                                <option value="">Selecione...</option>
                             </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Quantidade</label>
+                            <input type="number" id="lanQtd" value="1" required min="1">
+                        </div>
                     </div>
-                    <div class="form-group" style="flex: 1;"><label>Qtd. desta Venda</label>
-                        <input type="number" id="lanQtd" value="1" required min="1">
+                    <div class="input-row">
+                        <div class="form-group">
+                            <label>Valor Total (R$)</label>
+                            <input type="number" id="lanValor" step="0.01" placeholder="0,00" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="lanStatus" required>
+                                <option value="Pago">Pago</option>
+                                <option value="Pendente">Pendente</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
+                    <button type="submit" class="btn btn-success" id="btnSalvarLancamento">Salvar Venda</button>
+                </form>
+                <div id="msgLancamento" class="erro-msg"></div>
+            </div>
 
-                <div style="display: flex; gap: 10px;">
-                    <div class="form-group" style="flex: 1;"><label>Valor Total (R$)</label>
-                        <input type="number" id="lanValor" step="0.01" required>
-                    </div>
-                    <div class="form-group" style="flex: 1;"><label>Status</label>
-                        <select id="lanStatus" required>
-                            <option value="Pago">Pago</option>
-                            <option value="Pendente">Pendente</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <button type="submit" class="btn btn-success" id="btnSalvarLancamento">Salvar Venda</button>
-            </form>
-            <div id="msgLancamento" class="erro-msg" style="margin-top: 10px;"></div>
-        </div>
+        </div><!-- /.card -->
 
-    </div>
+        <div class="ornament" style="margin-top: 22px;">· · ·</div>
+
+    </div><!-- /.app-container -->
 
     <script>
-        // COLOQUE AQUI A SUA NOVA URL DO APPS SCRIPT
         const urlAPI = 'https://script.google.com/macros/s/AKfycbxiIly_3K910voX-9smKrSqWCOqFOvEP7gVed721pe8X6OptGYhExOCiUgwgbqo1h0lHw/exec';
 
         let todosPedidos = [];
@@ -161,7 +519,6 @@
         let todosProdutos = [];
         let totalVendidoAtual = 0;
 
-        // INICIALIZAÇÃO: Agora carrega Produtos e depois Pedidos
         window.onload = async () => {
             await carregarProdutosBase();
             carregarPedidos();
@@ -186,14 +543,9 @@
             carregarPedidos();
         }
 
-        // ==========================================
-        // MÓDULO DE PRODUTOS E MATEMÁTICA DE PREÇOS
-        // ==========================================
-
+        // === PRODUTOS ===
         async function carregarProdutosBase() {
             todosProdutos = await fetchAPI({ acao: 'listarProdutos' });
-            
-            // Atualiza o Dropdown do formulário de Vendas
             const selectProd = document.getElementById('lanProduto');
             selectProd.innerHTML = '<option value="">Selecione o produto...</option>';
             todosProdutos.forEach(p => {
@@ -201,41 +553,35 @@
             });
         }
 
-        // LÓGICA DE MULTIPLICAÇÃO AUTOMÁTICA
         function calcularPrecoAutomatico() {
             const select = document.getElementById('lanProduto');
             const qtd = Number(document.getElementById('lanQtd').value) || 0;
             const campoValor = document.getElementById('lanValor');
-
             if (select.selectedIndex > 0 && qtd > 0) {
-                const optionSelecionada = select.options[select.selectedIndex];
-                const precoBase = Number(String(optionSelecionada.getAttribute('data-preco')).replace(',', '.')) || 0;
-                
-                if (precoBase > 0) {
-                    campoValor.value = (precoBase * qtd).toFixed(2);
-                }
+                const precoBase = Number(String(select.options[select.selectedIndex].getAttribute('data-preco')).replace(',', '.')) || 0;
+                if (precoBase > 0) campoValor.value = (precoBase * qtd).toFixed(2);
             }
         }
 
-        // Adiciona "escutadores" para calcular sempre que mexer no Produto ou na Quantidade
         document.getElementById('lanProduto').addEventListener('change', calcularPrecoAutomatico);
         document.getElementById('lanQtd').addEventListener('input', calcularPrecoAutomatico);
-
 
         function abrirGerenciadorProdutos() {
             mudarTela('view-produtos');
             const container = document.getElementById('lista-produtos-container');
             container.innerHTML = '';
-
             if (todosProdutos.length === 0) {
-                container.innerHTML = '<p style="text-align:center;">Nenhum produto cadastrado.</p>';
+                container.innerHTML = '<p style="text-align:center; color: var(--gold); padding: 20px;">Nenhum produto cadastrado.</p>';
             } else {
                 todosProdutos.forEach(p => {
                     let valor = Number(String(p.Preco).replace(',','.')).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
                     container.innerHTML += `
                     <div class="card-item">
-                        <div><strong>${p.Nome}</strong><br><small>${valor}</small></div>
-                        <button class="btn btn-edit" onclick="abrirFormularioProduto('${p.ID_Produto}')">Editar</button>
+                        <div class="item-info">
+                            <strong>${p.Nome}</strong>
+                            <small>${valor} por unidade</small>
+                        </div>
+                        <button class="btn-edit" onclick="abrirFormularioProduto('${p.ID_Produto}')">Editar</button>
                     </div>`;
                 });
             }
@@ -245,7 +591,6 @@
             mudarTela('view-form-produto');
             document.getElementById('formProduto').reset();
             document.getElementById('prodIdEditar').value = id || '';
-            
             if (id) {
                 document.getElementById('titulo-form-produto').innerText = "Editar Produto";
                 const prod = todosProdutos.find(p => p.ID_Produto == id);
@@ -259,35 +604,30 @@
         document.getElementById('formProduto').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btnSalvarProduto');
-            btn.innerText = 'Salvando...'; btn.disabled = true;
-
+            btn.innerText = 'Salvando…'; btn.disabled = true;
             await fetchAPI({
                 acao: 'salvarProduto',
                 idProduto: document.getElementById('prodIdEditar').value,
                 nome: document.getElementById('prodNome').value,
                 preco: document.getElementById('prodPreco').value
             });
-
             btn.innerText = 'Salvar Produto'; btn.disabled = false;
-            await carregarProdutosBase(); // Recarrega os produtos atualizados
-            abrirGerenciadorProdutos(); // Volta pra tela de lista de produtos
+            await carregarProdutosBase();
+            abrirGerenciadorProdutos();
         });
 
-        // ==========================================
-        // MÓDULO DE PEDIDOS E LANÇAMENTOS (MANTIDO)
-        // ==========================================
-
+        // === PEDIDOS ===
         async function carregarPedidos() {
             const select = document.getElementById('selectPedido');
             try {
                 todosPedidos = await fetchAPI({ acao: 'listarPedidos' });
                 if (todosPedidos.length === 0) {
-                    select.innerHTML = '<option value="">Nenhum pedido</option>';
+                    select.innerHTML = '<option value="">Nenhum pedido criado</option>';
                     return;
                 }
-                select.innerHTML = '<option value="">-- Escolha --</option>';
+                select.innerHTML = '<option value="">— Escolha um pedido —</option>';
                 [...todosPedidos].reverse().forEach(p => {
-                    select.innerHTML += `<option value="${p.ID_Pedido}">#${p.ID_Pedido} - ${p.Descricao}</option>`;
+                    select.innerHTML += `<option value="${p.ID_Pedido}">#${p.ID_Pedido} — ${p.Descricao}</option>`;
                 });
                 select.selectedIndex = 1;
                 atualizarDashboard();
@@ -299,24 +639,18 @@
         async function atualizarDashboard() {
             const id = document.getElementById('selectPedido').value;
             if (!id) return document.getElementById('area-dashboard').style.display = 'none';
-
             document.getElementById('area-dashboard').style.display = 'block';
             pedidoAtual = todosPedidos.find(p => p.ID_Pedido == id);
-
-            document.getElementById('dashData').innerText = pedidoAtual.Data || '--';
+            document.getElementById('dashData').innerText = pedidoAtual.Data || '—';
             document.getElementById('dashTotal').innerText = pedidoAtual.Qtd_Total;
-            document.getElementById('dashRecebido').innerText = 'Calculando...';
-
+            document.getElementById('dashRecebido').innerText = 'Calculando…';
             lancamentosAtuais = await fetchAPI({ acao: 'carregarDetalhes', idPedido: id });
-
             let vendidos = 0; let recebido = 0;
-
             lancamentosAtuais.forEach(l => {
                 vendidos += Number(l.Qtd_Vendida || 0);
                 let isPago = (l.Status === 'Pago' || !l.Status || l.Status.trim() === '');
                 if (isPago) recebido += Number(String(l.Valor).replace(',', '.') || 0);
             });
-
             totalVendidoAtual = vendidos;
             document.getElementById('dashVendidos').innerText = vendidos;
             document.getElementById('dashFaltam').innerText = pedidoAtual.Qtd_Total - vendidos;
@@ -325,26 +659,24 @@
 
         function abrirGerenciador() {
             mudarTela('view-gerenciar');
-            document.getElementById('gerenciar-nome-pedido').innerText = `#${pedidoAtual.ID_Pedido} - ${pedidoAtual.Descricao}`;
+            document.getElementById('gerenciar-nome-pedido').innerText = `#${pedidoAtual.ID_Pedido} — ${pedidoAtual.Descricao}`;
             document.getElementById('gerenciar-vendidos').innerText = totalVendidoAtual;
             document.getElementById('gerenciar-total').innerText = pedidoAtual.Qtd_Total;
-
             const container = document.getElementById('lista-vendas-container');
             container.innerHTML = '';
-
             if (lancamentosAtuais.length === 0) {
-                container.innerHTML = '<p style="text-align:center; color:#666;">Nenhuma venda lançada ainda.</p>';
+                container.innerHTML = '<p style="text-align:center; color: var(--gold); padding:20px;">Nenhuma venda lançada ainda.</p>';
             } else {
                 lancamentosAtuais.forEach(l => {
                     let statusClass = (l.Status === 'Pendente') ? 'bg-pendente' : 'bg-pago';
                     let valorBRL = Number(String(l.Valor).replace(',', '.')).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
                     container.innerHTML += `
                     <div class="card-item">
-                        <div>
-                            <strong>${l.Cliente}</strong> <span class="badge ${statusClass}">${l.Status || 'Pago'}</span><br>
-                            <small>${l.Qtd_Vendida} unid. | <b>${l.Produto}</b> | ${valorBRL}</small>
+                        <div class="item-info">
+                            <strong>${l.Cliente} <span class="badge ${statusClass}">${l.Status || 'Pago'}</span></strong>
+                            <small>${l.Qtd_Vendida} unid. &nbsp;·&nbsp; ${l.Produto} &nbsp;·&nbsp; ${valorBRL}</small>
                         </div>
-                        <button class="btn btn-edit" onclick="abrirFormularioEdicao(${l.ID_Lancamento})">Editar</button>
+                        <button class="btn-edit" onclick="abrirFormularioEdicao(${l.ID_Lancamento})">Editar</button>
                     </div>`;
                 });
             }
@@ -352,19 +684,20 @@
 
         function abrirFormularioVenda() {
             mudarTela('view-form-venda');
-            document.getElementById('titulo-form-venda').innerText = "Adicionar Venda";
+            document.getElementById('titulo-form-venda').innerText = "Nova Venda";
             document.getElementById('formLancamento').reset();
             document.getElementById('lanModo').value = 'novo';
-            document.getElementById('msgLancamento').innerText = '';
+            const msg = document.getElementById('msgLancamento');
+            msg.innerText = ''; msg.classList.remove('visible');
         }
 
         function abrirFormularioEdicao(idLan) {
             mudarTela('view-form-venda');
             document.getElementById('titulo-form-venda').innerText = "Editar Venda";
-            document.getElementById('msgLancamento').innerText = '';
+            const msg = document.getElementById('msgLancamento');
+            msg.innerText = ''; msg.classList.remove('visible');
             document.getElementById('lanModo').value = 'editar';
             document.getElementById('lanIdEditar').value = idLan;
-
             const lancamento = lancamentosAtuais.find(l => l.ID_Lancamento == idLan);
             document.getElementById('lanCliente').value = lancamento.Cliente;
             document.getElementById('lanProduto').value = lancamento.Produto;
@@ -378,21 +711,19 @@
             const msg = document.getElementById('msgLancamento');
             const modo = document.getElementById('lanModo').value;
             const qtdDesejada = Number(document.getElementById('lanQtd').value);
-
             let totalSimulado = totalVendidoAtual;
             if (modo === 'editar') {
                 const lanAntigo = lancamentosAtuais.find(l => l.ID_Lancamento == document.getElementById('lanIdEditar').value);
                 totalSimulado -= Number(lanAntigo.Qtd_Vendida);
             }
-
             if ((totalSimulado + qtdDesejada) > pedidoAtual.Qtd_Total) {
-                msg.innerText = `Estoque insuficiente! Restam ${pedidoAtual.Qtd_Total - totalSimulado} unid.`;
+                msg.innerText = `Estoque insuficiente! Restam ${pedidoAtual.Qtd_Total - totalSimulado} unidades.`;
+                msg.classList.add('visible');
                 return;
             }
-
             const btn = document.getElementById('btnSalvarLancamento');
-            btn.innerText = 'Salvando...'; btn.disabled = true; msg.innerText = '';
-
+            btn.innerText = 'Salvando…'; btn.disabled = true; 
+            msg.innerText = ''; msg.classList.remove('visible');
             await fetchAPI({
                 acao: (modo === 'novo') ? 'adicionarLancamento' : 'editarLancamento',
                 idPedido: pedidoAtual.ID_Pedido,
@@ -403,7 +734,6 @@
                 produto: document.getElementById('lanProduto').value,
                 status: document.getElementById('lanStatus').value
             });
-
             btn.innerText = 'Salvar Venda'; btn.disabled = false;
             await atualizarDashboard();
             abrirGerenciador();
@@ -412,19 +742,16 @@
         document.getElementById('formNovoPedido').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btnSalvarPedido');
-            btn.innerText = 'Salvando...'; btn.disabled = true;
-
+            btn.innerText = 'Criando…'; btn.disabled = true;
             await fetchAPI({
                 acao: 'criarPedido',
                 descricao: document.getElementById('descPedido').value,
                 qtdTotal: document.getElementById('qtdTotalPedido').value
             });
-
             document.getElementById('formNovoPedido').reset();
-            btn.innerText = 'Salvar'; btn.disabled = false;
+            btn.innerText = 'Criar Pedido'; btn.disabled = false;
             voltarParaHome();
         });
-
     </script>
 </body>
 </html>
